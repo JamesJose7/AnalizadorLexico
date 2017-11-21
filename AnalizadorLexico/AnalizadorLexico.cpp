@@ -68,7 +68,7 @@ int main() {
 		std::string mystr((std::istreambuf_iterator<char>(ifs)),
 			(std::istreambuf_iterator<char>()));
 
-		std::cout << "CADENA: " << mystr << "\n";
+		std::cout << "CONTENIDO A EVALUAR:\n " << mystr << "\n\n";
 
 		const char *puntero = mystr.c_str();
 		int estado = 0;
@@ -369,7 +369,7 @@ int main() {
 				if (isTDL(*puntero)) {
 					estado = 0;
 					token = 0;
-					
+
 					//Contar operador
 					operadoresCounter++;
 				}
@@ -431,7 +431,7 @@ int main() {
 			break;
 		}*/
 
-		printf("ESTADO FINAL: %d", estado);
+		printf("ESTADO FINAL: %d\n", estado);
 
 		// Comprobar si la cadena es aceptada
 		/*bool aceptado = std::find(std::begin(e_aceptacion), std::end(e_aceptacion), estado) != std::end(e_aceptacion);
