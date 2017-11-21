@@ -1,7 +1,8 @@
 ﻿  AnalizadorLexico.cpp
-c:\users\jeeps\google drive\utpl\vii ciclo\teoria de automatas y compiladores\proyectofinal\i bimestre\analizadorlexico\analizadorlexico\analizadorlexico.cpp(186): warning C4473: 'scanf_s' : not enough arguments passed for format string
-  c:\users\jeeps\google drive\utpl\vii ciclo\teoria de automatas y compiladores\proyectofinal\i bimestre\analizadorlexico\analizadorlexico\analizadorlexico.cpp(186): note: placeholders and their parameters expect 2 variadic arguments, but 1 were provided
-  c:\users\jeeps\google drive\utpl\vii ciclo\teoria de automatas y compiladores\proyectofinal\i bimestre\analizadorlexico\analizadorlexico\analizadorlexico.cpp(186): note: the missing variadic argument 2 is required by format string '%c'
-  c:\users\jeeps\google drive\utpl\vii ciclo\teoria de automatas y compiladores\proyectofinal\i bimestre\analizadorlexico\analizadorlexico\analizadorlexico.cpp(186): note: this argument is used as a buffer size
-c:\users\jeeps\google drive\utpl\vii ciclo\teoria de automatas y compiladores\proyectofinal\i bimestre\analizadorlexico\analizadorlexico\analizadorlexico.cpp(23): warning C4101: 'cadena': unreferenced local variable
-LINK : fatal error LNK1168: cannot open C:\Users\jeeps\Google Drive\UTPL\VII Ciclo\Teoria de Automatas y Compiladores\ProyectoFinal\I Bimestre\AnalizadorLexico\Debug\AnalizadorLexico.exe for writing
+c:\users\jeeps\google drive\utpl\vii ciclo\teoria de automatas y compiladores\proyectofinal\i bimestre\analizadorlexico\analizadorlexico\analizadorlexico.cpp(322): warning C4473: 'scanf_s' : not enough arguments passed for format string
+  c:\users\jeeps\google drive\utpl\vii ciclo\teoria de automatas y compiladores\proyectofinal\i bimestre\analizadorlexico\analizadorlexico\analizadorlexico.cpp(322): note: placeholders and their parameters expect 2 variadic arguments, but 1 were provided
+  c:\users\jeeps\google drive\utpl\vii ciclo\teoria de automatas y compiladores\proyectofinal\i bimestre\analizadorlexico\analizadorlexico\analizadorlexico.cpp(322): note: the missing variadic argument 2 is required by format string '%c'
+  c:\users\jeeps\google drive\utpl\vii ciclo\teoria de automatas y compiladores\proyectofinal\i bimestre\analizadorlexico\analizadorlexico\analizadorlexico.cpp(322): note: this argument is used as a buffer size
+c:\users\jeeps\google drive\utpl\vii ciclo\teoria de automatas y compiladores\proyectofinal\i bimestre\analizadorlexico\analizadorlexico\analizadorlexico.cpp(47): warning C4101: 'cadena': unreferenced local variable
+  AnalizadorLexico.vcxproj -> C:\Users\jeeps\Google Drive\UTPL\VII Ciclo\Teoria de Automatas y Compiladores\ProyectoFinal\I Bimestre\AnalizadorLexico\Debug\AnalizadorLexico.exe
+  AnalizadorLexico.vcxproj -> C:\Users\jeeps\Google Drive\UTPL\VII Ciclo\Teoria de Automatas y Compiladores\ProyectoFinal\I Bimestre\AnalizadorLexico\Debug\AnalizadorLexico.pdb (Full PDB)

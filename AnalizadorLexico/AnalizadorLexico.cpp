@@ -9,9 +9,33 @@
 #include <string>
 
 bool isTDL(int c) {
-	char chars[] = { ';', '<', ' ', '+'};
+	char chars[] = {' ', '(', ')', '[', ']', '"', '='};
 	bool cexists = std::find(std::begin(chars), std::end(chars), c) != std::end(chars);
 	if (cexists) {
+		return true;
+	}
+	else {
+		return false;
+	}
+}
+
+bool isSim(int c) {
+	char chars[] = {'+', '-', '*', '/', '^', '<', '>'};
+	bool cexists = std::find(std::begin(chars), std::end(chars), c) != std::end(chars);
+	if (cexists) {
+		return true;
+	}
+	else {
+		return false;
+	}
+}
+
+bool isPalabraR(std::string palabra) {
+	//Palabras reservadas
+	std::string reserved_w[] = {"Begin", "End", "int", "String", "boolean", "double", "if", "then", "else", "do", "while", "for", "TRUE", "FALSE", "char", "null", "return"};
+
+	bool exists = std::find(std::begin(reserved_w), std::end(reserved_w), palabra) != std::end(reserved_w);
+	if (exists) {
 		return true;
 	}
 	else {
@@ -24,11 +48,18 @@ int main() {
 	char salir;
 
 	int ERROR = -1;
-	int e_aceptacion = { 1, 9, 12, 15 };
+	int e_aceptacion[5] = { 1, 9, 12, 15 };
+
+	//Contadores
+	int pReservadasCounter = 0;
+	int variablesCounter = 0;
+	int numerosCounter = 0;
+	int operadoresCounter = 0;
+	int erroresCounter = 0;
 
 	do {
 		system("cls");
-		printf("Ingrese la cadena: ");
+		//printf("Ingrese la cadena: ");
 		//gets_s(cadena);
 		//std::string mystr;
 		//std::getline(std::cin, mystr);
@@ -43,6 +74,8 @@ int main() {
 		int estado = 0;
 		char token = 0;
 		const char *temp = puntero;
+		std::string acumulador = "";
+		//Adelantar puntero
 		temp++;
 
 		while (*puntero != '\0') {
@@ -50,25 +83,52 @@ int main() {
 
 				//Variable
 			case 0:
-				//ESTADO 5
-				if (*puntero == 'B' && *temp == 'e') {
-					estado = 5;
+				//SIM
+				if (isSim(*puntero)) {
+					estado = 2;
 					token = 0;
 				}
-				// ESTADO 10
-				else if (*puntero == 'E' && *temp == 'n') {
-					estado = 10;
+				//;
+				else if (*puntero == ';') {
+					estado = 3;
 					token = 0;
 				}
-				//ESTADO 13
-				else if (*puntero == 'i' && *temp == 'n') {
+				//digitos
+				else if (isdigit(*puntero)) {
+					estado = 4;
+					token = 0;
+				}
+				//==
+				else if (*puntero == '=') {
+					estado = 7;
+					token = 0;
+				}
+				//&&
+				else if (*puntero == '&') {
+					estado = 9;
+					token = 0;
+				}
+				//||
+				else if (*puntero == '|') {
+					estado = 11;
+					token = 0;
+				}
+				//<=
+				else if (*puntero == '<') {
 					estado = 13;
 					token = 0;
 				}
-				//ESTADO 1
+				//>=
+				else if (*puntero == '>') {
+					estado = 15;
+					token = 0;
+				}
+				//ALPHA
 				else if (isalpha(*puntero)) {
 					estado = 1;
 					token = 1;
+					//Acumular caracter
+					acumulador += *puntero;
 				}
 				else {
 					estado = ERROR;
@@ -79,65 +139,68 @@ int main() {
 				if (isalpha(*puntero) || isdigit(*puntero)) {
 					estado = 1;
 					token = 0;
+					//Acumular caracter
+					acumulador += *puntero;
 				}
 				else if (isTDL(*puntero)) {
 					estado = 0;
 					token = 0;
+
+					//Contador varibles
+					if (!isPalabraR(acumulador)) {
+						variablesCounter++;
+					}
+					if (isPalabraR(acumulador)) {
+						pReservadasCounter++;
+					}
+					//Reiniciar acumulador
+					acumulador = "";
+				}
+				else if (*puntero == ';') {
+					estado = 3;
+					token = 0;
+
+					//Contador varibles
+					if (!isPalabraR(acumulador)) {
+						variablesCounter++;
+					}
+					if (isPalabraR(acumulador)) {
+						pReservadasCounter++;
+					}
+					//Reiniciar acumulador
+					acumulador = "";
 				}
 				else {
 					estado = ERROR;
-					estado = ERROR;
+					token = ERROR;
+
+					//Contador varibles
+					if (!isPalabraR(acumulador)) {
+						variablesCounter++;
+					}
+					if (isPalabraR(acumulador)) {
+						pReservadasCounter++;
+					}
+					//Reiniciar acumulador
+					acumulador = "";
 				}
+
 				break;
+			//Simbolos
 			case 2:
-				//TODO: CHECK
-				if (isdigit(*puntero)) {
-					estado = 2;
+				if (isTDL(*puntero)) {
+					estado = 0;
 					token = 0;
-				}
-				break;
-			//BEGIN
-			case 5:
-				if (*puntero == 'e') {
-					estado = 6;
-					token = 0;
-				}
-				else {
-					estado = ERROR;
-					estado = ERROR;
-				}
-				break;
-			case 6:
-				if (*puntero == 'g') {
-					estado = 7;
-					token = 0;
+
+					//Contar operador
+					operadoresCounter++;
 				}
 				else {
 					estado = ERROR;
 					token = ERROR;
 				}
 				break;
-			case 7:
-				if (*puntero == 'i') {
-					estado = 8;
-					token = 0;
-				}
-				else {
-					estado = ERROR;
-					token = ERROR;
-				}
-				break;
-			case 8:
-				if (*puntero == 'n') {
-					estado = 9;
-					token = 0;
-				}
-				else {
-					estado = ERROR;
-					token = ERROR;
-				}
-				break;
-			case 9:
+			case 3:
 				if (*puntero == '\n') {
 					estado = 0;
 					token = 0;
@@ -147,82 +210,216 @@ int main() {
 					token = ERROR;
 				}
 				break;
-			//END
-			case 10:
-				if (*puntero == 'n') {
-					estado = 11;
+			//DIGITOS
+			case 4:
+				if (isdigit(*puntero)) {
+					estado = 4;
 					token = 0;
-				} else {
+				}
+				else if (*puntero == '.') {
+					estado = 5;
+					token = 0;
+				}
+				else if (isTDL(*puntero)) {
+					estado = 0;
+					token = 0;
+
+					//Contar numero
+					numerosCounter++;
+				}
+				else {
 					estado = ERROR;
 					token = ERROR;
 				}
 				break;
-			case 11: 
-				if (*puntero == 'd') {
+			case 5 :
+				if (isdigit(*puntero) && isdigit(*temp)) {
+					estado = 5;
+					token = 0;
+				}
+				else if (isdigit(*puntero) && !isdigit(*temp)) {
+					estado = 6;
+					token = 0;
+				}
+				else {
+					estado = ERROR;
+					token = ERROR;
+				}
+				break;
+			case 6:
+				if (isTDL(*puntero)) {
+					estado = 0;
+					token = 0;
+
+					//Contar numero
+					numerosCounter++;
+				}
+				else {
+					estado = ERROR;
+					token = ERROR;
+				}
+				break;
+			//==
+			case 7:
+				if (*puntero == '=') {
+					estado = 8;
+					token = 0;
+				}
+				else {
+					estado = ERROR;
+					token = ERROR;
+				}
+				break;
+			case 8:
+				if (isTDL(*puntero)) {
+					estado = 0;
+					token = 0;
+
+					//Contar operador
+					operadoresCounter++;
+				}
+				else {
+					estado = ERROR;
+					token = ERROR;
+				}
+				break;
+			//&&
+			case 9:
+				if (*puntero == '&') {
+					estado = 10;
+					token = 0;
+				}
+				else {
+					estado = ERROR;
+					token = ERROR;
+				}
+				break;
+			case 10:
+				if (isTDL(*puntero)) {
+					estado = 0;
+					token = 0;
+
+					//Contar operador
+					operadoresCounter++;
+				}
+				else {
+					estado = ERROR;
+					token = ERROR;
+				}
+				break;
+			// ||
+			case 11:
+				if (*puntero == '|') {
 					estado = 12;
 					token = 0;
-				} else {
+				}
+				else {
 					estado = ERROR;
 					token = ERROR;
 				}
 				break;
 			case 12:
-				if (*puntero == ' ') {
+				if (isTDL(*puntero)) {
 					estado = 0;
 					token = 0;
-				} else {
+
+					//Contar operador
+					operadoresCounter++;
+				}
+				else {
 					estado = ERROR;
 					token = ERROR;
 				}
 				break;
-			//INT
+			// <=
 			case 13:
-				if (*puntero == 'n') {
+				if (*puntero == '=') {
 					estado = 14;
 					token = 0;
-				} else {
+				}
+				else {
 					estado = ERROR;
 					token = ERROR;
 				}
 				break;
 			case 14:
-				if (*puntero == 't') {
-					estado = 15;
-					token = 0;
-				} else {
-					estado = ERROR;
-					token = ERROR;
-				}
-				break;
-			case 15:
-				if (*puntero == ' ') {
+				if (isTDL(*puntero)) {
 					estado = 0;
 					token = 0;
-				} else {
+
+					//Contar operador
+					operadoresCounter++;
+				}
+				else {
 					estado = ERROR;
 					token = ERROR;
 				}
 				break;
+			// >= 
+			case 15:
+				if (*puntero == '=') {
+					estado = 16;
+					token = 0;
+				}
+				else {
+					estado = ERROR;
+					token = ERROR;
+				}
+			case 16:
+				if (isTDL(*puntero)) {
+					estado = 0;
+					token = 0;
+					
+					//Contar operador
+					operadoresCounter++;
+				}
+				else {
+					estado = ERROR;
+					token = ERROR;
+				}
 			case -1:
-				break;
-			default:
-				token = 0;
-				break;
+				//EROR
+				estado = 0;
+				erroresCounter++;
 
+				//Go back *
+				puntero--;
+				temp--;
+				break;
 			}
+
+
 			puntero++;
 			temp++;
 
 			printf("FT(q%d,%c)= q%d\n", estado, puntero[-1], estado);
-			if (estado == ERROR) {
+			/*if (estado == ERROR) {
 				break;
-			}
+			}*/
 
 		} // fin While*/
 
-		printf("Token: %d\n", token);
+		if (estado == 1) {
+			//std::cout << "\n# P Reservadas: " << acumulador;
+			if (isPalabraR(acumulador)) {
+				pReservadasCounter++;
+			} 
+			if (!isPalabraR(acumulador)) {
+				variablesCounter++;
+			}
+		}
+		//Contadores
+		printf("\n\n*********** Contadores ***********\n");
+		std::cout << "\n# P Reservadas: " << pReservadasCounter;
+		std::cout << "\n# Variables: " << variablesCounter;
+		std::cout << "\n# Numeros: " << numerosCounter;
+		std::cout << "\n# Operadores: " << operadoresCounter;
+		std::cout << "\n# Errores: " << erroresCounter;
+		printf("\n\n**********************************\n\n");
 
-		switch (token) {
+		//printf("Token: %d\n", token);
+
+		/*switch (token) {
 		case 0:
 			printf("No es identificador\n");
 			break;
@@ -232,18 +429,18 @@ int main() {
 		case 2:
 			printf("otra cosa\n");
 			break;
-		}
+		}*/
 
-		printf("ESTADO ACTUAL: %d", estado);
+		printf("ESTADO FINAL: %d", estado);
 
 		// Comprobar si la cadena es aceptada
-		bool aceptado = std::find(std::begin(e_aceptacion), std::end(e_aceptacion), estado) != std::end(e_aceptacion);
+		/*bool aceptado = std::find(std::begin(e_aceptacion), std::end(e_aceptacion), estado) != std::end(e_aceptacion);
 		if (aceptado) {
 			printf("\n\nCadena aceptada\n\n");
 		}
 		else {
 			printf("\n\nCadena no aceptada\n\n");
-		}
+		}*/
 
 		printf("Desea salir del programa (s/n)?:");
 		scanf_s("%c", &salir);

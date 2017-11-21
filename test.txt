@@ -1,2 +1,3 @@
-Begin
-bevar;begin end int
+f_Beginsdf;
+asd null
+Begin 89123 + 234.124 <= begin;
