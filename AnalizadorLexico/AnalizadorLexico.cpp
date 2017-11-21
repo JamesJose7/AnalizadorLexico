@@ -8,6 +8,8 @@
 #include <iostream>
 #include <string>
 
+#include <vector>
+
 bool isTDL(int c) {
 	char chars[] = {' ', '(', ')', '[', ']', '"', '='};
 	bool cexists = std::find(std::begin(chars), std::end(chars), c) != std::end(chars);
@@ -57,6 +59,14 @@ int main() {
 	int operadoresCounter = 0;
 	int erroresCounter = 0;
 
+	int current_linea = 0;
+	int current_col = 0;
+
+	//Errores
+	std::vector<int> lineas_err = {};
+	std::vector<int> cols_err = {};
+
+
 	do {
 		system("cls");
 		//printf("Ingrese la cadena: ");
@@ -83,13 +93,8 @@ int main() {
 
 				//Variable
 			case 0:
-				//SIM
-				if (isSim(*puntero)) {
-					estado = 2;
-					token = 0;
-				}
 				//;
-				else if (*puntero == ';') {
+				if (*puntero == ';') {
 					estado = 3;
 					token = 0;
 				}
@@ -99,28 +104,33 @@ int main() {
 					token = 0;
 				}
 				//==
-				else if (*puntero == '=') {
+				else if (*puntero == '=' && *temp == '=') {
 					estado = 7;
 					token = 0;
 				}
 				//&&
-				else if (*puntero == '&') {
+				else if (*puntero == '&' && *temp == '&') {
 					estado = 9;
 					token = 0;
 				}
 				//||
-				else if (*puntero == '|') {
+				else if (*puntero == '|' && *temp == '|') {
 					estado = 11;
 					token = 0;
 				}
 				//<=
-				else if (*puntero == '<') {
+				else if (*puntero == '<' && *temp == '=') {
 					estado = 13;
 					token = 0;
 				}
 				//>=
-				else if (*puntero == '>') {
+				else if (*puntero == '>' && *temp == '=') {
 					estado = 15;
+					token = 0;
+				}
+				//SIM
+				else if (isSim(*puntero)) {
+					estado = 2;
 					token = 0;
 				}
 				//ALPHA
@@ -382,12 +392,25 @@ int main() {
 				estado = 0;
 				erroresCounter++;
 
+				//Go back col
+				current_col--;
+				//log errors
+				cols_err.push_back(current_col);
+				lineas_err.push_back(current_linea);
+
 				//Go back *
 				puntero--;
 				temp--;
 				break;
 			}
+			//Lineas y cols
+			current_col++;
 
+			//Count lineas
+			if (*puntero == '\n') {
+				current_linea++;
+				current_col = 0;
+			}
 
 			puntero++;
 			temp++;
@@ -432,6 +455,13 @@ int main() {
 		}*/
 
 		printf("ESTADO FINAL: %d\n", estado);
+
+		//Errores
+		printf("\n\n*********** Errores ***********\n");
+		for (int i = 0; i < lineas_err.size(); i++) {
+			std::cout << "\nError| Linea " << lineas_err[i] + 1 << " en la columna " << cols_err[i] + 1;
+		}
+		printf("\n\n**********************************\n\n");
 
 		// Comprobar si la cadena es aceptada
 		/*bool aceptado = std::find(std::begin(e_aceptacion), std::end(e_aceptacion), estado) != std::end(e_aceptacion);
