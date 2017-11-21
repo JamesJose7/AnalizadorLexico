@@ -11,7 +11,7 @@
 #include <vector>
 
 bool isTDL(int c) {
-	char chars[] = {' ', '(', ')', '[', ']', '"', '='};
+	char chars[] = {' ', '(', ')', '[', ']', '"', '=', ';', '\n'};
 	bool cexists = std::find(std::begin(chars), std::end(chars), c) != std::end(chars);
 	if (cexists) {
 		return true;
@@ -140,6 +140,7 @@ int main() {
 					//Acumular caracter
 					acumulador += *puntero;
 				}
+				else if ()
 				else {
 					estado = ERROR;
 					token = ERROR;
@@ -440,20 +441,6 @@ int main() {
 		std::cout << "\n# Errores: " << erroresCounter;
 		printf("\n\n**********************************\n\n");
 
-		//printf("Token: %d\n", token);
-
-		/*switch (token) {
-		case 0:
-			printf("No es identificador\n");
-			break;
-		case 1:
-			printf("Es identificador\n");
-			break;
-		case 2:
-			printf("otra cosa\n");
-			break;
-		}*/
-
 		printf("ESTADO FINAL: %d\n", estado);
 
 		//Errores
@@ -462,15 +449,6 @@ int main() {
 			std::cout << "\nError| Linea " << lineas_err[i] + 1 << " en la columna " << cols_err[i] + 1;
 		}
 		printf("\n\n**********************************\n\n");
-
-		// Comprobar si la cadena es aceptada
-		/*bool aceptado = std::find(std::begin(e_aceptacion), std::end(e_aceptacion), estado) != std::end(e_aceptacion);
-		if (aceptado) {
-			printf("\n\nCadena aceptada\n\n");
-		}
-		else {
-			printf("\n\nCadena no aceptada\n\n");
-		}*/
 
 		printf("Desea salir del programa (s/n)?:");
 		scanf_s("%c", &salir);

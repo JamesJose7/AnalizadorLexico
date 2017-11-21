@@ -1,3 +1,5 @@
-f_Beginsdf;
-asd null
-Begin 89123 + 234.124 <= begin;
+Begin
+var String == 12 ;
+if(variable <= 23.5);
+sadfasf == TRUE ;
+End
